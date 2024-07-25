@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Drive File Uploader</title>
+  <meta name="description" content="Upload and manage your files on Google Drive with our easy-to-use file uploader.">
+  <meta name="keywords" content="Google Drive, file uploader, file management, upload files, manage files">
+  <link rel="icon" href="path/to/your/favicon.ico" type="image/x-icon">
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for file icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <!-- Custom CSS -->
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      padding-top: 4.5rem; /* Adjusted padding to prevent content from being covered by navbar */
+      padding-bottom: 5rem; /* Add padding to the bottom to prevent footer overlap */
+    }
+    .navbar {
+      background-color: #1e3d58; /* Deep navy blue */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-brand, .navbar-nav .nav-link {
+      color: #ffffff !important;
+    }
+    .navbar-toggler {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+    .container {
+      margin-top: 2rem;
+    }
+    h1, h2 {
+      font-weight: bold;
+      color: #343a40;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 1.5rem; /* Add margin bottom to heading */
+    }
+    .btn-upload, .btn-list-files, .btn-delete-all {
+      width: 150px; /* Set a fixed width for the buttons */
+      display: block;
+      margin: 10px auto; /* Center the buttons */
+      color: white;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+    .btn-upload {
+      background-color: #007bff;
+    }
+    .btn-upload:hover {
+      background-color: #0056b3;
+    }
+    .btn-list-files {
+      background-color: #28a745;
+    }
+    .btn-list-files:hover {
+      background-color: #218838;
+    }
+    .btn-delete-all {
+      background-color: #dc3545;
+    }
+    .btn-delete-all:hover {
+      background-color: #c82333;
+    }
+    .footer {
+      background-color: #1e3d58; /* Deep navy blue */
+      color: #ffffff;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 1rem 0;
+      box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .footer a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    .list-group-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color 0.3s ease;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      background-color: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .list-group-item:hover {
+      background-color: #f1f1f1;
+    }
+    .file-icon {
+      margin-right: 15px;
+      font-size: 1.5rem;
+    }
+    .file-name {
+      flex: 1;
+    }
+    .progress {
+      height: 20px;
+      margin-top: 20px;
+      display: none; /* Hide initially */
+    }
+    .progress-bar {
+      line-height: 20px;
+    }
+    #deleteAllFiles {
+      display: none; /* Hide the delete all button initially */
+    }
+    .custom-file {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      height: calc(1.5em + 0.75rem + 2px);
+      margin-bottom: 1rem;
+    }
+    .custom-file-input {
+      position: absolute;
+      z-index: 2;
+      width: 100%;
+      height: calc(1.5em + 0.75rem + 2px);
+      margin: 0;
+      opacity: 0;
+    }
+    .custom-file-label {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 1;
+      height: calc(1.5em + 0.75rem + 2px);
+      padding: 0.375rem 0.75rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+      transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .custom-file-label::after {
+      content: "Browse";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 3;
+      display: block;
+      height: calc(1.5em + 0.75rem);
+      padding: 0.375rem 0.75rem;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #e9ecef;
+      border-left: 1px solid #ced4da;
+      border-radius: 0 0.25rem 0.25rem 0;
+    }
+    .custom-file-input:focus ~ .custom-file-label {
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    .custom-file-input:disabled ~ .custom-file-label,
+    .custom-file-input:read-only ~ .custom-file-label {
+      background-color: #e9ecef;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <a class="navbar-brand" href="#">DriveUploader</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item" id="authLink">
+          <a class="nav-link" href="/auth">Login with Google</a>
+        </li>
+        <li class="nav-item d-none" id="logoutLink">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <h1>Upload File to Google Drive</h1>
+        <form id="uploadForm" enctype="multipart/form-data" class="mb-4">
+          <div class="form-group custom-file">
+            <input type="file" name="file" id="fileInput" class="custom-file-input" required>
+            <label class="custom-file-label" for="fileInput">Choose file</label>
+          </div>
+          <button type="submit" class="btn btn-upload">Upload</button>
+        </form>
+        <div class="progress">
+          <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">0%</div>
+        </div>
+        <h2>Files</h2>
+        <button id="deleteAllFiles" class="btn btn-delete-all mb-3">Delete All Files</button>
+        <ul id="fileList" class="list-group mb-5"></ul> <!-- Add margin bottom to the list group -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner Modal -->
+  <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <p class="mt-3">Uploading file, please wait...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <p>File uploaded successfully!</p>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted">© 2024 DriveUploader. All rights reserved. <a href="/">Privacy</a> | <a href="/">Terms</a></span>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    let isAuthenticated = false;
+
+    const checkAuthentication = async () => {
+      try {
+        const response = await fetch('/current-user');
+        if (response.ok) {
+          const user = await response.json();
+          isAuthenticated = true;
+          document.getElementById('authLink').classList.add('d-none');
+          document.getElementById('logoutLink').classList.remove('d-none');
+          document.getElementById('logoutLink').innerHTML = `<a class="nav-link" href="/logout">${user.email} (Logout)</a>`;
+          await listFiles(); // List files immediately after login
+        } else {
+          isAuthenticated = false;
+        }
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+        isAuthenticated = false;
+      }
+    };
+
+    // Run the authentication check when the page loads
+    document.addEventListener('DOMContentLoaded', checkAuthentication);
+
+    const uploadForm = document.getElementById('uploadForm');
+    uploadForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!isAuthenticated) {
+        alert('Please log in with Google first');
+        return;
+      }
+      const fileInput = document.getElementById('fileInput');
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/upload', true);
+
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          const progressBar = document.getElementById('progressBar');
+          progressBar.style.width = percentComplete + '%';
+          progressBar.setAttribute('aria-valuenow', percentComplete);
+          progressBar.textContent = Math.floor(percentComplete) + '%';
+        }
+      });
+
+      xhr.onloadstart = () => {
+        document.querySelector('.progress').style.display = 'block'; // Show progress bar
+      };
+
+      xhr.onloadend = () => {
+        document.querySelector('.progress').style.display = 'none'; // Hide progress bar
+      };
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          // Show success modal
+          $('#successModal').modal('show');
+          listFiles(); // Refresh the file list after uploading
+        } else {
+          alert('Error uploading file');
+        }
+        const progressBar = document.getElementById('progressBar');
+        progressBar.style.width = '0%';
+        progressBar.setAttribute('aria-valuenow', 0);
+        progressBar.textContent = '0%';
+      };
+
+      xhr.send(formData);
+    });
+
+    document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+      var fileName = document.getElementById("fileInput").files[0].name;
+      var nextSibling = e.target.nextElementSibling
+      nextSibling.innerText = fileName
+    });
+
+    const getFileIcon = (mimeType) => {
+      if (mimeType.startsWith('image/')) {
+        return '<i class="file-icon fas fa-file-image"></i>';
+      } else if (mimeType.startsWith('video/')) {
+        return '<i class="file-icon fas fa-file-video"></i>';
+      } else if (mimeType.startsWith('audio/')) {
+        return '<i class="file-icon fas fa-file-audio"></i>';
+      } else if (mimeType === 'application/pdf') {
+        return '<i class="file-icon fas fa-file-pdf"></i>';
+      } else if (mimeType.startsWith('application/vnd')) {
+        return '<i class="file-icon fas fa-file-alt"></i>';
+      } else {
+        return '<i class="file-icon fas fa-file"></i>';
+      }
+    };
+
+    const deleteFile = async (fileId) => {
+      if (!isAuthenticated) {
+        alert('Please log in with Google first');
+        return;
+      }
+      try {
+        const response = await fetch(`/delete/${fileId}`, { method: 'DELETE' });
+        if (response.ok) {
+          alert('File deleted successfully');
+          await listFiles(); // Refresh the file list after deletion
+        } else {
+          const errorMessage = await response.text();
+          alert('Error deleting file: ' + errorMessage);
+        }
+      } catch (error) {
+        console.error('Error deleting file:', error);
+      }
+    };
+
+    const deleteAllFiles = async () => {
+      if (!isAuthenticated) {
+        alert('Please log in with Google first');
+        return;
+      }
+      if (!confirm('Are you sure you want to delete all files? This action cannot be undone.')) {
+        return;
+      }
+      try {
+        const response = await fetch('/delete-all', { method: 'DELETE' });
+        if (response.ok) {
+          alert('All files deleted successfully');
+          await listFiles(); // Refresh the file list after deletion
+        } else {
+          const errorMessage = await response.text();
+          alert('Error deleting all files: ' + errorMessage);
+        }
+      } catch (error) {
+        console.error('Error deleting all files:', error);
+      }
+    };
+
+    document.getElementById('deleteAllFiles').addEventListener('click', deleteAllFiles);
+
+    const listFiles = async () => {
+      if (!isAuthenticated) {
+        alert('Please log in with Google first');
+        return;
+      }
+      const response = await fetch('/files');
+      if (response.ok) {
+        const files = await response.json();
+        console.log('Files:', files); // Log the files for debugging
+        const fileList = document.getElementById('fileList');
+        fileList.innerHTML = '';
+        if (files.length > 0) {
+          document.getElementById('deleteAllFiles').style.display = 'block'; // Show the delete all button
+        } else {
+          document.getElementById('deleteAllFiles').style.display = 'none'; // Hide the delete all button
+        }
+        files.forEach(file => {
+          const listItem = document.createElement('li');
+          listItem.className = 'list-group-item';
+          const link = document.createElement('a');
+          link.href = `/download/${file.id}`;
+          link.innerHTML = `${getFileIcon(file.mimeType)} <span class="file-name">${file.name}</span>`;
+          const deleteButton = document.createElement('button');
+          deleteButton.className = 'btn btn-danger btn-sm ml-3';
+          deleteButton.textContent = 'Delete';
+          deleteButton.onclick = () => deleteFile(file.id);
+          listItem.appendChild(link);
+          listItem.appendChild(deleteButton);
+          fileList.appendChild(listItem);
+        });
+      } else {
+        const errorMessage = await response.text();
+        alert('Error retrieving file list: ' + errorMessage);
+      }
+    };
+  </script>
+</body>
+</html>
