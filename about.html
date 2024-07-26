@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      padding-top: 4.5rem; /* Adjusted padding to prevent content from being covered by navbar */
+      padding-bottom: 5rem; /* Add padding to the bottom to prevent footer overlap */
+    }
+    .navbar {
+      background-color: #1e3d58; /* Deep navy blue */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-brand, .navbar-nav .nav-link {
+      color: #ffffff !important;
+    }
+    .navbar-toggler {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+    .container {
+      margin-top: 2rem;
+    }
+    h1, h2 {
+      font-weight: bold;
+      color: #343a40;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 1.5rem; /* Add margin bottom to heading */
+    }
+    .footer {
+      background-color: #1e3d58; /* Deep navy blue */
+      color: #ffffff;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 1rem 0;
+      box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .footer a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <a class="navbar-brand" href="#">DriveUploader</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/privacy">Privacy</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/terms">Terms</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>About Us</h1>
+    <p>Welcome to DriveUploader, your reliable partner for managing and uploading files to Google Drive. Our mission is to provide a seamless and user-friendly experience for all your file management needs. With our service, you can easily upload, manage, and share your files directly to Google Drive.</p>
+    <p>Founded in 2024, DriveUploader has quickly grown to become a trusted name in file management solutions. Our team is dedicated to continually improving our platform and providing top-notch customer support. We value your feedback and strive to make DriveUploader the best tool for your file management tasks.</p>
+    <p>Our core values include:</p>
+    <ul>
+      <li><strong>Customer Satisfaction:</strong> We prioritize our users' needs and work tirelessly to meet and exceed their expectations.</li>
+      <li><strong>Innovation:</strong> We are committed to constant innovation and staying ahead of the curve with the latest technologies.</li>
+      <li><strong>Integrity:</strong> We conduct our business with the highest standards of integrity, transparency, and accountability.</li>
+      <li><strong>Teamwork:</strong> We believe in the power of teamwork and foster a collaborative environment to achieve our goals.</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted">© 2024 DriveUploader.  <a href="/privacy">Privacy</a> | <a href="/terms">Terms</a> | <a href="/about">About</a></span>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
