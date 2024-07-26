@@ -33,4 +33,5 @@ Sebelum menjalankan aplikasi, pastikan Anda memiliki:
 ```
 GOOGLE_CLIENT_ID=your-client-id
 GOOGLE_CLIENT_SECRET=your-client-secret
+GOOGLE_REDIRECT_URI=url-redirect
 ```
