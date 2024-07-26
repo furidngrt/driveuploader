@@ -213,6 +213,21 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/privacy', (req, res) => {
+  console.log('Serving privacy.html');
+  res.sendFile(path.join(__dirname, 'privacy.html'));
+});
+
+app.get('/terms', (req, res) => {
+  console.log('Serving terms.html');
+  res.sendFile(path.join(__dirname, 'terms.html'));
+});
+
+app.get('/about', (req, res) => {
+  console.log('Serving about.html');
+  res.sendFile(path.join(__dirname, 'about.html'));
+});
+
 app.listen(3000, () => {
   console.log('Server started on http://localhost:3000');
 });
